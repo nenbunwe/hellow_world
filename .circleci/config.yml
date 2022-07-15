@@ -28,7 +28,7 @@ jobs:
     steps:
       - run: echo "persist to workspace test by goltokka" > output.txt
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: root/tmp/workspace
           paths:
             - target/output.txt
             - build/*
@@ -37,7 +37,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: root/tmp/workspace
       - run: cat output.txt
 workflows:
   # Name the workflow "welcome"
