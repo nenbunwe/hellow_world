@@ -11,30 +11,6 @@ commands: # a reusable command with parameters
   to_print_pipeline_id:
     steps:
       - run: echo ${CIRCLE_WORKFLOW_ID}
-      
-# 
-# an error alert check
-      - run:
-          name: Testing application
-          command: make test
-          shell: /bin/bash
-          working_directory: ~/my-app
-          no_output_timeout: 30m
-          environment:
-            FOO: bar
-
-      - run: echo 127.0.0.1 devhost | sudo tee -a /etc/hosts
-
-      - run: |
-          sudo -u root createuser -h localhost --superuser ubuntu &&
-          sudo createdb -h localhost test_db
-
-      - run:
-          name: Upload Failed Tests
-          # command: curl --data fail_tests.log http://example.com/error_logs
-          command: echo "Hello Error World"
-          when: on_fail
-# 
 
 jobs:
   my-job:
@@ -51,10 +27,20 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - print_pipeline_id
+  # an error alert job - 
+  my_error_job:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: exit 1
+      - run:
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail
+  
 workflows:
   my-workflow:
     jobs:
       - my-job
-  my_workflows:
-    jobs:
       - my_jobs
+      - my_error_job
