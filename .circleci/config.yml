@@ -35,7 +35,7 @@ jobs:
       - run: exit 1
       - run:
           name: on error
-          command: echo "Hello Error!"
+          command: echo "Hello Error! \n note':' This is an error alert test by Goltokka "
           when: on_fail
   
 workflows:
